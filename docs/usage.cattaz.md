@@ -20,7 +20,7 @@ Default port for web is 8080 and default port for WebSocket is 1234. To change p
 
 ```bash
 docker build . -t cattaz # --build-arg http_proxy=http://user:pass@proxy.example.com:8080 --build-arg https_proxy=http://user:pass@proxy.example.com:8080
-docker run -it -p 8080:8080 -p 1234:1234 cattaz
+docker run -it -p 8080:8080 -p 1234:1234 -v $(pwd)/y-leveldb-databases:/usr/src/app/y-leveldb-databases cattaz
 ```
 
 Now you can visit `http://localhost:8080/` to view the application.

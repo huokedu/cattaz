@@ -20,7 +20,7 @@ yarn start
 
 ```bash
 docker build . -t cattaz # --build-arg http_proxy=http://user:pass@proxy.example.com:8080 --build-arg https_proxy=http://user:pass@proxy.example.com:8080
-docker run -it -p 8080:8080 -p 1234:1234 cattaz
+docker run -it -p 8080:8080 -p 1234:1234 -v $(pwd)/y-leveldb-databases:/usr/src/app/y-leveldb-databases cattaz
 ```
 
 上記コマンドを実行後、`http://localhost:8080/`にアクセスするとアプリケーションを見ることができます。

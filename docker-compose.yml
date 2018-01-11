@@ -10,3 +10,5 @@ services:
     ports:
       - "${PORT_WEBSOCKET:-1234}:1234"
       - "${PORT_WEB:-8080}:8080"
+    volumes:
+      - ./y-leveldb-databases:/usr/src/app/y-leveldb-databases
