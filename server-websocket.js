@@ -19,6 +19,8 @@ import crypto from 'crypto';
 import { join, sep } from 'path';
 import { lstatSync, readdirSync } from 'fs';
 
+import LevelDBLib from './src/server/LevelDBLib';
+
 Y.extend(yWebsocketsServer, yleveldb);
 
 const isDirectory = (source) => {
@@ -50,7 +52,7 @@ router.use(bodyParser.text());
 const io = socketIo.listen(server);
 
 const yInstances = {};
-const dirs = getDirectories('y-leveldb-databases').map(p => p.split(sep)[1]);
+const dirs = getDirectories('y-leveldb-databases').map(p => LevelDBLib.unescapeNamespace(p.split(sep)[1]));
 const metadata = dirs.reduce((accumulator, d) => Object.assign(accumulator, { [d]: {} }), {});
 
 function getInstanceOfY(room) {
@@ -59,7 +61,7 @@ function getInstanceOfY(room) {
       db: {
         name: options.db,
         dir: 'y-leveldb-databases',
-        namespace: room,
+        namespace: LevelDBLib.escapeNamespace(room),
       },
       connector: {
         name: 'websockets-server',
