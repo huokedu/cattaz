@@ -16,23 +16,10 @@ import finalhandler from 'finalhandler';
 import bodyParser from 'body-parser';
 import clone from 'lodash/clone';
 import crypto from 'crypto';
-import { join, sep } from 'path';
-import { lstatSync, readdirSync } from 'fs';
 
 import LevelDBLib from './src/server/LevelDBLib';
 
 Y.extend(yWebsocketsServer, yleveldb);
-
-const isDirectory = (source) => {
-  try {
-    return lstatSync(source).isDirectory();
-  } catch (e) {
-    console.log(e);
-    return false;
-  }
-};
-
-const getDirectories = source => (isDirectory(source) ? readdirSync(source).map(name => join(source, name)).filter(isDirectory) : []);
 
 const options = minimist(process.argv.slice(2), {
   string: ['port', 'debug', 'db'],
@@ -52,12 +39,7 @@ router.use(bodyParser.text());
 const io = socketIo.listen(server);
 
 const yInstances = {};
-const dirs = getDirectories('y-leveldb-databases').map(p => LevelDBLib.unescapeNamespace(p.split(sep)[1]));
-const metadata = dirs.reduce((accumulator, d) => Object.assign(accumulator, {
-  [d]: {
-    active: 0,
-  },
-}), {});
+const metadata = LevelDBLib.restoreMetadata('y-leveldb-databases');
 
 function getInstanceOfY(room) {
   if (yInstances[room] == null) {
