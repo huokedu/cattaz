@@ -54,6 +54,7 @@ export default class WeatherApplication extends React.Component {
   }
   constructor() {
     super();
+    this.state = { weather: new WeatherModel() };
     this.refInputCity = React.createRef();
     this.handleGetWeather = this.handleGetWeather.bind(this);
   }
